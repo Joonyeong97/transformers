@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - test_update_push_ci
+      - test_update_push_ci_none
   repository_dispatch:
 
 env:
