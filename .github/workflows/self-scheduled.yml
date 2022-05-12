@@ -169,4 +169,3 @@ jobs:
         with:
           name: ${{ env.machine_type }}_run_all_tests_gpu_${{ env.matrix_folders }}_test_reports
           path: /transformers/reports/${{ env.machine_type }}_tests_gpu_${{ matrix.folders }}
-
