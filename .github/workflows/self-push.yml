@@ -3,9 +3,7 @@ name: Self-hosted runner (push)
 on:
   push:
     branches:
-      - main
-      - ci_*
-      - ci-*
+      - test_update_push_ci_full
     paths:
       - "src/**"
       - "tests/**"
@@ -84,7 +82,8 @@ jobs:
       matrix:
         folders: ${{ fromJson(needs.setup.outputs.matrix) }}
         machines: [single-gpu]
-    runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    # runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    runs-on: [self-hosted, ydshieh, temp, '${{ matrix.machines }}']
     container:
       image: huggingface/transformers-all-latest-gpu
       options: --gpus 0 --shm-size "16gb" --ipc host -v /mnt/cache/.cache/huggingface:/mnt/cache/
@@ -144,7 +143,8 @@ jobs:
       matrix:
         folders: ${{ fromJson(needs.setup.outputs.matrix) }}
         machines: [multi-gpu]
-    runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    # runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    runs-on: [self-hosted, ydshieh, temp, '${{ matrix.machines }}']
     container:
       image: huggingface/transformers-all-latest-gpu
       # TODO: Should it be `all` or `0`. Same question for places in other workflow files.
@@ -205,7 +205,8 @@ jobs:
       fail-fast: false
       matrix:
         machines: [single-gpu]
-    runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    # runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    runs-on: [self-hosted, ydshieh, temp, '${{ matrix.machines }}']
     container:
       image: nvcr.io/nvidia/pytorch:21.03-py3
       options: --gpus 0 --shm-size "16gb" --ipc host -v /mnt/cache/.cache/huggingface:/mnt/cache/
@@ -254,7 +255,8 @@ jobs:
       fail-fast: false
       matrix:
         machines: [multi-gpu]
-    runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    # runs-on: [self-hosted, docker-gpu, '${{ matrix.machines }}']
+    runs-on: [self-hosted, ydshieh, temp, '${{ matrix.machines }}']
     container:
       image: nvcr.io/nvidia/pytorch:21.03-py3
       options: --gpus all --shm-size "16gb" --ipc host -v /mnt/cache/.cache/huggingface:/mnt/cache/
@@ -314,7 +316,7 @@ jobs:
         env:
           CI_SLACK_BOT_TOKEN: ${{ secrets.CI_SLACK_BOT_TOKEN }}
           CI_SLACK_CHANNEL_ID: ${{ secrets.CI_SLACK_CHANNEL_ID }}
-          CI_SLACK_CHANNEL_ID_DAILY: ${{ secrets.CI_SLACK_CHANNEL_ID_DAILY }}
+          CI_SLACK_CHANNEL_ID_DAILY: ${{ secrets.CI_SLACK_CHANNEL_DUMMY_TESTS }}
           CI_SLACK_CHANNEL_DUMMY_TESTS: ${{ secrets.CI_SLACK_CHANNEL_DUMMY_TESTS }}
           CI_EVENT: push
         # We pass `needs.setup.outputs.matrix` as the argument. A processing in `notification_service.py` to change
